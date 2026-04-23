@@ -189,7 +189,7 @@ void CH_RequestInitData(void)
 
 void CH_CheckIncomingChat(const char* text)
 {
-	if (!text || !ch_autoreply.integer || ctx.autoReplyPending) return;
+	if (!cg || !text || !ch_autoreply.integer || ctx.autoReplyPending) return;
 
 	if (IsTypedAlone(text, "@ch") || IsTypedAlone(text, "@fp") || IsTypedAlone(text, "@ac"))
 	{
