@@ -1,0 +1,132 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;c++;cppm;ixx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="Resource Files">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    </Filter>
+    <Filter Include="Header Files">
+      <UniqueIdentifier>{47a5675a-0af1-4b3c-83ee-5c4c1c53f83c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine Files">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hh;hpp;hxx;h++;hm;inl;inc;ipp;xsd</Extensions>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="dllmain.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="hook.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ipc.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="syscalls.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="features.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="queue.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="engine\animtable.h">
+      <Filter>Engine Files</Filter>
+    </ClInclude>
+    <ClInclude Include="engine\be_ea.h">
+      <Filter>Engine Files</Filter>
+    </ClInclude>
+    <ClInclude Include="engine\bg_lib.h">
+      <Filter>Engine Files</Filter>
+    </ClInclude>
+    <ClInclude Include="engine\bg_local.h">
+      <Filter>Engine Files</Filter>
+    </ClInclude>
+    <ClInclude Include="engine\bg_public.h">
+      <Filter>Engine Files</Filter>
+    </ClInclude>
+    <ClInclude Include="engine\bg_weapons.h">
+      <Filter>Engine Files</Filter>
+    </ClInclude>
+    <ClInclude Include="engine\cg_lights.h">
+      <Filter>Engine Files</Filter>
+    </ClInclude>
+    <ClInclude Include="engine\cg_local.h">
+      <Filter>Engine Files</Filter>
+    </ClInclude>
+    <ClInclude Include="engine\cg_media.h">
+      <Filter>Engine Files</Filter>
+    </ClInclude>
+    <ClInclude Include="engine\cg_public.h">
+      <Filter>Engine Files</Filter>
+    </ClInclude>
+    <ClInclude Include="engine\disablewarnings.h">
+      <Filter>Engine Files</Filter>
+    </ClInclude>
+    <ClInclude Include="engine\g_local.h">
+      <Filter>Engine Files</Filter>
+    </ClInclude>
+    <ClInclude Include="engine\g_public.h">
+      <Filter>Engine Files</Filter>
+    </ClInclude>
+    <ClInclude Include="engine\G2.h">
+      <Filter>Engine Files</Filter>
+    </ClInclude>
+    <ClInclude Include="engine\G2_gore_shared.h">
+      <Filter>Engine Files</Filter>
+    </ClInclude>
+    <ClInclude Include="engine\inv.h">
+      <Filter>Engine Files</Filter>
+    </ClInclude>
+    <ClInclude Include="engine\keycodes.h">
+      <Filter>Engine Files</Filter>
+    </ClInclude>
+    <ClInclude Include="engine\menudef.h">
+      <Filter>Engine Files</Filter>
+    </ClInclude>
+    <ClInclude Include="engine\misc.h">
+      <Filter>Engine Files</Filter>
+    </ClInclude>
+    <ClInclude Include="engine\q_shared.h">
+      <Filter>Engine Files</Filter>
+    </ClInclude>
+    <ClInclude Include="engine\surfaceflags.h">
+      <Filter>Engine Files</Filter>
+    </ClInclude>
+    <ClInclude Include="engine\tags.h">
+      <Filter>Engine Files</Filter>
+    </ClInclude>
+    <ClInclude Include="engine\tr_types.h">
+      <Filter>Engine Files</Filter>
+    </ClInclude>
+    <ClInclude Include="engine\ui_local.h">
+      <Filter>Engine Files</Filter>
+    </ClInclude>
+    <ClInclude Include="engine\ui_public.h">
+      <Filter>Engine Files</Filter>
+    </ClInclude>
+    <ClInclude Include="engine\ui_shared.h">
+      <Filter>Engine Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ipc.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="features.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="queue.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="protocol.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+  </ItemGroup>
+</Project>
