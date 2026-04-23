@@ -179,15 +179,11 @@ int CH_HandleCommand(void)
 
 void CH_RequestInitData(void)
 {
-	CH_Packet pktGuid = { 0 };
-	pktGuid.magic = CH_MAGIC_WORD;
-	pktGuid.type = CH_CMD_REQUEST_GUID;
 
 	CH_Packet pktScan = { 0 };
 	pktScan.magic = CH_MAGIC_WORD;
 	pktScan.type = CH_CMD_REQUEST_SCAN;
 
-	IPC_QueueData(&pktGuid);
 	IPC_QueueData(&pktScan);
 }
 
