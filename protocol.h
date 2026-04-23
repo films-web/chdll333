@@ -21,7 +21,7 @@ typedef enum {
 typedef struct {
     unsigned int magic;
     int type;
-    int size;
+    unsigned int size;
     unsigned char payload[MAX_PAYLOAD_SIZE + 1];
 } CH_Packet;
 
