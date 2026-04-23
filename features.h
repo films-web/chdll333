@@ -15,8 +15,6 @@ extern vmCvar_t ch_autocolor;
 extern vmCvar_t ch_autoreply;
 
 typedef struct {
-	char guid[64];
-	char uiString[128];
 	int waitingForPlayerList;
 	int waitingForFairshot;
 	int autoReplyPending;
