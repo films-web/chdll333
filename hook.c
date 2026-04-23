@@ -174,6 +174,7 @@ static int VM_Call(int vm, int command, int arg0, int arg1, int arg2, int arg3, 
 		{
 
 		case UI_REFRESH:
+			CH_HandleIcp();
 			return (*pVM_Call)(vm, UI_REFRESH, arg0);
 
 		case UI_INIT:
