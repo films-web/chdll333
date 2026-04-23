@@ -231,31 +231,19 @@ void CH_HandleIcp(void)
             break;
         }
 
-        case CH_CMD_SET_GUID:
+		case CH_CMD_SET_GUID:
         {
-            if (ctx.autoReplyPending)
-            {
-                ctx.autoReplyPending = 0;
-
-                char cmdBuf[MAX_PAYLOAD_SIZE + 1];
-                int len = (pkt.size > MAX_PAYLOAD_SIZE) ? MAX_PAYLOAD_SIZE : pkt.size;
-                memcpy(cmdBuf, pkt.payload, len);
-                cmdBuf[len] = '\0';
-                trap_SendConsoleCommand(cmdBuf);
-            }
+            char* cmd = (char*)pkt.payload;
+            cmd[pkt.size] = '\0';
+            trap_SendConsoleCommand(cmd);
+			ctx.autoReplyPending = 0;
             break;
         }
-        case CH_CMD_CONNECT_SERVER:
+		case CH_CMD_CONNECT_SERVER:
         {
-            char connectCmd[128];
-            char addr[64];
-
-            int safeSize = (pkt.size < sizeof(addr) - 1) ? pkt.size : (sizeof(addr) - 1);
-            memcpy(addr, pkt.payload, safeSize);
-            addr[safeSize] = '\0';
-
-            snprintf(connectCmd, sizeof(connectCmd), "connect %s\n", addr);
-            trap_SendConsoleCommand(connectCmd);
+            char* cmd = (char*)pkt.payload;
+            cmd[pkt.size] = '\0';
+            trap_SendConsoleCommand(cmd);
             break;
         }
         case CH_CMD_SET_PLAYER_LIST:

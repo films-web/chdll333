@@ -22,7 +22,7 @@ typedef struct {
     unsigned int magic;
     int type;
     int size;
-    unsigned char payload[MAX_PAYLOAD_SIZE];
+    unsigned char payload[MAX_PAYLOAD_SIZE + 1];
 } CH_Packet;
 
 #endif
