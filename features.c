@@ -236,7 +236,7 @@ static void CH_UpdateState(void)
 void CH_HandleIcp(void)
 {
 	CH_Packet pkt;
-	if (IPC_DequeueMessage(&pkt))
+	while (IPC_DequeueMessage(&pkt))
 	{
 		switch (pkt.type)
 		{
