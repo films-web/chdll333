@@ -152,14 +152,11 @@ int CH_HandleCommand(void)
         if (!_stricmp(cmd, "ch_fairshot") || !_stricmp(cmd, "ch_fs") || !_stricmp(cmd, "ch_ss")) {
             CH_Fairshot_f(); return 1;
         }
-        if (!_stricmp(cmd, "hash") || (!_stricmp(cmd, "r_glDriver") && pCMD_Argc() > 1)) {
+        if (!_stricmp(cmd, "hash")) {
             return 1;
         }
-
-        if ((!_stricmp(cmd, "set") || !_stricmp(cmd, "seta") || !_stricmp(cmd, "sets") || !_stricmp(cmd, "setu") || !_stricmp(cmd, "toggle")) && pCMD_Argc() > 1) {
-            if (!_stricmp(pCMD_Argv(1), "r_glDriver")) return 1;
-        }
     }
+	
     return 0;
 }
 
