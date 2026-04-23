@@ -45,37 +45,30 @@ DWORD WINAPI IPC_Thread(LPVOID lpParam) {
         }
 
         // 2. Receiving Packets from Loader
-        if (PeekNamedPipe(hPipe, NULL, 0, NULL, &bytesAvail, NULL) != FALSE && bytesAvail >= (sizeof(int) * 3)) {
+        if (PeekNamedPipe(hPipe, NULL, 0, NULL, &bytesAvail, NULL) != FALSE && bytesAvail > 0) {
             CH_Packet inPkt;
 
-            // Explicitly check header read
-            if (ReadFile(hPipe, &inPkt, sizeof(int) * 3, &bytesRead, NULL) != FALSE) {
+            // FIXED: Read the ENTIRE struct at once in a single ReadFile call
+            if (ReadFile(hPipe, &inPkt, sizeof(CH_Packet), &bytesRead, NULL) != FALSE) {
 
-                // Validate security signature
-                if (inPkt.magic == CH_MAGIC_WORD) {
+                // Ensure we at least read the 12-byte header
+                if (bytesRead >= (sizeof(int) * 3)) {
 
-                    int payloadReadSuccess = 1;
+                    // Validate security signature
+                    if (inPkt.magic == CH_MAGIC_WORD) {
 
-                    // Explicitly check payload read
-                    if (inPkt.size > 0 && inPkt.size <= MAX_PAYLOAD_SIZE) {
-                        if (ReadFile(hPipe, inPkt.payload, inPkt.size, &bytesRead, NULL) == FALSE) {
-                            payloadReadSuccess = 0;
+                        // Validate payload size bounds
+                        if (inPkt.size >= 0 && inPkt.size <= MAX_PAYLOAD_SIZE) {
+                            Queue_Push(&ipc_in_queue, &inPkt);
                         }
                     }
-
-                    if (payloadReadSuccess) {
-                        Queue_Push(&ipc_in_queue, &inPkt);
-                    }
                     else {
-                        break; // Payload read failed mid-stream, break to reconnect
+                        break; // Invalid magic word, break to drop connection
                     }
-                }
-                else {
-                    break; // Invalid magic word, break to drop connection
                 }
             }
             else {
-                break; // Header read failed, break to reconnect
+                break; // Read failed (buffer too small or pipe broke), break to reconnect
             }
         }
 
