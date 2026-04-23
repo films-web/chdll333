@@ -139,10 +139,6 @@ static int VM_Call(int vm, int command, int arg0, int arg1, int arg2, int arg3, 
 			return 0;
 
 		case CG_INIT:
-			cg = 0;
-			cgs = 0;
-			refdef = 0;
-
 			(*pVM_Call)(vm, CG_INIT, arg0, arg1, arg2);
 
 			CH_AddCommands();
@@ -160,6 +156,9 @@ static int VM_Call(int vm, int command, int arg0, int arg1, int arg2, int arg3, 
 
 		case CG_SHUTDOWN:
 			CH_RemoveCommands();
+			cg = 0;
+			cgs = 0;
+			refdef = 0;
 			return (*pVM_Call)(vm, CG_SHUTDOWN);
 
 		default:
