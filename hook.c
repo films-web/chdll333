@@ -159,7 +159,6 @@ static int VM_Call(int vm, int command, int arg0, int arg1, int arg2, int arg3, 
 			cgs = 0;
 			refdef = 0;
 			CH_RemoveCommands();
-			CH_UpdateState();
 			return (*pVM_Call)(vm, CG_SHUTDOWN);
 
 		default:
