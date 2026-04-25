@@ -206,7 +206,7 @@ static void CH_UpdateState(void)
     {
         data->inGame = 0;
         data->playerNum = -1;
-        trap_Cvar_VariableStringBuffer("name", data->name, sizeof(data->name));
+        strncpy(data->name, "UnamedPlayer", sizeof(data->server) - 1);
         strncpy(data->server, "In Lobby", sizeof(data->server) - 1);
     }
 
