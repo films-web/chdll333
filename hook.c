@@ -98,7 +98,6 @@ static int CG_syscalls(int* args)
 	{
 		const char* text = (const char*)pVM_GetArg((void*)args[1]);
 		if (text) {
-			pCom_Printf(text);
 			CH_CheckIncomingChat(text);
 		}
 	}

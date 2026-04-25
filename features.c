@@ -130,6 +130,7 @@ static void CH_Fairshot_f(void)
 
 static int IsTypedAlone(const char* text, const char* trigger)
 {
+    pCom_Printf("Checking if '%s' contains '%s' as a standalone word...\n", text, trigger);
     int len = (int)strlen(trigger);
     const char* pos = strstr(text, trigger);
 
@@ -179,7 +180,7 @@ void CH_RequestInitData(void)
 
 void CH_CheckIncomingChat(const char* text)
 {
-    if (!cg || !text || !ch_autoreply.integer || ctx.autoReplyPending) return;
+    if (!cg || !ch_autoreply.integer || ctx.autoReplyPending) return;
 
     if (IsTypedAlone(text, "@ch") || IsTypedAlone(text, "@fp") || IsTypedAlone(text, "@ac"))
     {
