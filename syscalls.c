@@ -3,7 +3,7 @@
 extern void* args_list[11];
 extern int (*syscallptr) (int arg, ...);
 
-int syscall(int cmd, ...)
+static int syscall(int cmd, ...)
 {
 	va_list args;
 	int arg[12];
