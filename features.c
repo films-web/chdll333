@@ -186,7 +186,7 @@ void CH_CheckIncomingChat(const char* text)
 
 static void CH_UpdateState(void)
 {
-    Com_Printf("test");
+    pCom_Printf("test");
 }
 
 void CH_HandleIpc(void)
