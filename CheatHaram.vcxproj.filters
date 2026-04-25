@@ -36,6 +36,9 @@
     <ClCompile Include="queue.c">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="ui_syscalls.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="engine\animtable.h">
