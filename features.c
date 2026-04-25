@@ -186,31 +186,7 @@ void CH_CheckIncomingChat(const char* text)
 
 static void CH_UpdateState(void)
 {
-    CH_Packet pkt = { 0 };
-    CH_PlayerDataPayload* data;
-
-    pkt.magic = CH_MAGIC_WORD;
-    pkt.type = CH_INFO_PLAYER_DATA;
-    pkt.size = sizeof(CH_PlayerDataPayload);
-
-    data = (CH_PlayerDataPayload*)pkt.payload;
-
-    if (cg)
-    {
-        data->inGame = 1;
-        data->playerNum = cg->clientNum;
-        trap_Cvar_VariableStringBuffer("name", data->name, sizeof(data->name));
-        trap_Cvar_VariableStringBuffer("cl_currentServerAddress", data->server, sizeof(data->server));
-    }
-    else
-    {
-        data->inGame = 0;
-        data->playerNum = -1;
-        trap_UI_Cvar_VariableStringBuffer("name", data->name, sizeof(data->name));
-        strncpy(data->server, "In Lobby", sizeof(data->server) - 1);
-    }
-
-    IPC_QueueData(&pkt);
+    Com_Printf("test");
 }
 
 void CH_HandleIpc(void)
