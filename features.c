@@ -186,31 +186,32 @@ void CH_CheckIncomingChat(const char* text)
 
 static void CH_UpdateState(void)
 {
-    char name[64] = { 0 };
-    trap_Cvar_VariableStringBuffer("name", name, sizeof(name));
+    CH_Packet pkt = { 0 };
+    CH_PlayerDataPayload* data;
 
-    int playerNum = -1;
-    char server[128] = { 0 };
-    int inGame = 0;
+    pkt.magic = CH_MAGIC_WORD;
+    pkt.type = CH_INFO_PLAYER_DATA;
+    pkt.size = sizeof(CH_PlayerDataPayload);
+
+    data = (CH_PlayerDataPayload*)pkt.payload;
+
+    trap_Cvar_VariableStringBuffer("name", data->name, sizeof(data->name));
 
     if (cg)
     {
-        inGame = 1;
-        playerNum = cg->clientNum;
-        trap_Cvar_VariableStringBuffer("cl_currentServerAddress", server, sizeof(server));
+        data->inGame = 1;
+        data->playerNum = cg->clientNum;
+        trap_Cvar_VariableStringBuffer("cl_currentServerAddress", data->server, sizeof(data->server));
+    }
+    else
+    {
+        data->inGame = 0;
+        data->playerNum = -1;
     }
 
-    char telemetryBuf[MAX_PAYLOAD_SIZE];
-    snprintf(telemetryBuf, sizeof(telemetryBuf),
-        "{\"action\":\"update_state\",\"data\":{\"name\":\"%s\",\"playerNum\":%d,\"state\":\"%d\",\"server\":\"%s\"}}",
-        name, playerNum, inGame, server);
-
-    CH_Packet pkt;
-    pkt.magic = CH_MAGIC_WORD;
-    pkt.type = CH_INFO_PLAYER_DATA;
-    pkt.size = (int)strlen(telemetryBuf);
-    if (pkt.size > MAX_PAYLOAD_SIZE) pkt.size = MAX_PAYLOAD_SIZE;
-    memcpy(pkt.payload, telemetryBuf, pkt.size);
+    if (data->server[0] == '\0') {
+        strncpy(data->server, "In Lobby", sizeof(data->server) - 1);
+    }
 
     IPC_QueueData(&pkt);
 }
