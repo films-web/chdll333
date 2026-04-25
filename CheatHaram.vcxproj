@@ -25,7 +25,6 @@
     <ClCompile Include="ipc.c" />
     <ClCompile Include="queue.c" />
     <ClCompile Include="syscalls.c" />
-    <ClCompile Include="ui_syscalls.c" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="engine\animtable.h" />
