@@ -11,7 +11,6 @@
 int cgvm;
 int uivm;
 int (*syscallptr)(int arg, ...) = (int (*)(int, ...)) - 1;
-int (*ui_syscallptr)(int arg, ...) = (int (*)(int, ...)) - 1;
 int (*pVM_Create)(char*, int (*)(int*), int, int);
 int (*pVM_Call)(int vm, int command, ...);
 void* (*pVM_GetArg)(void* arg);
@@ -113,7 +112,6 @@ static int VM_Create(char* module, int (*psyscallptr)(int*), int interpret, int 
 {
 	if (!strcmp(module, "sof2mp_ui"))
 	{
-		ui_syscallptr = (int (*)(int, ...))psyscallptr;
 		uivm = (*pVM_Create)(module, psyscallptr, interpret, bruh);
 		return uivm;
 	}

@@ -13,7 +13,6 @@ static CH_Context ctx = {
 };
 
 extern void trap_RemoveCommand(const char* cmdName);
-extern void trap_UI_Cvar_VariableStringBuffer(const char* var_name, char* buffer, int bufsize);
 
 void CH_AddCommands(void)
 {
