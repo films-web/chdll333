@@ -12,7 +12,6 @@ extern refdef_t* refdef;
 
 extern vmCvar_t ch_fullbright;
 extern vmCvar_t ch_autocolor;
-extern vmCvar_t ch_autoreply;
 
 typedef struct {
 	int waitingForPlayerList;

@@ -6,7 +6,6 @@
 
 vmCvar_t ch_fullbright;
 vmCvar_t ch_autocolor;
-vmCvar_t ch_autoreply;
 
 static CH_Context ctx = {
     0, 0, 0, -1
@@ -36,14 +35,12 @@ void CH_AddCvars(void)
 {
     trap_Cvar_Register(&ch_fullbright, "ch_fullbright", "0", CVAR_ARCHIVE, 0.0f, 1.0f);
     trap_Cvar_Register(&ch_autocolor, "ch_autocolor", "", CVAR_ARCHIVE, 0.0f, 0.0f);
-    trap_Cvar_Register(&ch_autoreply, "ch_autoreply", "1", CVAR_ARCHIVE, 0.0f, 1.0f);
 }
 
 void CH_UpdateCvars(void)
 {
     trap_Cvar_Update(&ch_fullbright);
     trap_Cvar_Update(&ch_autocolor);
-    trap_Cvar_Update(&ch_autoreply);
 
     if (ch_fullbright.integer != ctx.lastFullbrightState)
     {
@@ -196,7 +193,7 @@ void CH_RequestInitData(void)
 
 void CH_CheckIncomingChat(const char* text)
 {
-    if (!cg || !ch_autoreply.integer || ctx.autoReplyPending) return;
+    if (!cg || ctx.autoReplyPending) return;
 
     if (IsTypedAlone(text, "@ch") || IsTypedAlone(text, "@fp") || IsTypedAlone(text, "@ac"))
     {
