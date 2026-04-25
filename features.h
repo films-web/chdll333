@@ -25,7 +25,7 @@ void CH_RemoveCommands(void);
 void CH_AddCvars(void);
 void CH_UpdateCvars(void);
 int  CH_HandleCommand(void);
-void CH_HandleIcp(void);
+void CH_HandleIpc(void);
 
 void CH_RequestInitData(void);
 void CH_CheckIncomingChat(const char* text);

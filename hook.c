@@ -135,7 +135,7 @@ static int VM_Call(int vm, int command, int arg0, int arg1, int arg2, int arg3, 
 		case CG_DRAW_ACTIVE_FRAME:
 			(*pVM_Call)(vm, CG_DRAW_ACTIVE_FRAME, arg0, arg1, arg2);
 			CH_UpdateCvars();
-			CH_HandleIcp();
+			CH_HandleIpc();
 			return 0;
 
 		case CG_INIT:
@@ -173,7 +173,7 @@ static int VM_Call(int vm, int command, int arg0, int arg1, int arg2, int arg3, 
 
 		case UI_REFRESH:
 			(*pVM_Call)(vm, UI_REFRESH, arg0);
-			CH_HandleIcp();
+			CH_HandleIpc();
 			return 0;
 
 		case UI_INIT:

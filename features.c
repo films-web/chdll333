@@ -216,7 +216,7 @@ static void CH_UpdateState(void)
     IPC_QueueData(&pkt);
 }
 
-void CH_HandleIcp(void)
+void CH_HandleIpc(void)
 {
     CH_Packet pkt;
     while (IPC_DequeueMessage(&pkt))
