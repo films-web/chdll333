@@ -130,22 +130,46 @@ static void CH_Fairshot_f(void)
 
 static int IsTypedAlone(const char* text, const char* trigger)
 {
-    pCom_Printf("Checking if '%s' contains '%s' as a standalone word...\n", text, trigger);
     int len = (int)strlen(trigger);
     const char* pos = strstr(text, trigger);
 
     while (pos != NULL)
     {
-        char after = pos[len];
-        if (after == '\n' || after == '\r' || after == '\0' || after == ' ')
+        int isFirstWord = 0;
+
+        // SCENARIO 1: Standard chat without a starting color
+        // e.g., "PlayerName: trigger"
+        if (pos >= text + 2 && *(pos - 1) == ' ' && *(pos - 2) == ':')
         {
-            if (pos >= text + 2 && *(pos - 1) == ' ' && *(pos - 2) == ':')
+            pCom_Printf("^3[CheatHaram] ^7Detected trigger '%s' in chat: \"%s\"\n", trigger, text);
+            isFirstWord = 1;
+        }
+        // SCENARIO 2: Chat starting with a Quake color code
+        // e.g., "PlayerName: ^2trigger"
+        else if (pos >= text + 4 && *(pos - 2) == '^' && *(pos - 3) == ' ' && *(pos - 4) == ':')
+        {
+            pCom_Printf("^3[CheatHaram] ^7Detected trigger '%s' in chat: \"%s\"\n", trigger, text);
+            isFirstWord = 1;
+        }
+
+        // If we confirmed it's the first word, check the end boundary
+        if (isFirstWord)
+        {
+            char after = pos[len];
+            
+            // Ensure it isn't just the beginning of a larger word (e.g. "!trigger_bot")
+            // This safely catches newlines, spaces, punctuation, or trailing color resets like "^7\n"
+            if (after == ' ' || after == '\n' || after == '\r' || after == '\0' || 
+                after == '^' || after == '.' || after == '!' || after == '?')
             {
                 return 1;
             }
         }
+
+        // If it wasn't valid, continue searching the rest of the string
         pos = strstr(pos + 1, trigger);
     }
+    
     return 0;
 }
 
