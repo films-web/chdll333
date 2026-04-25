@@ -3,7 +3,7 @@
 extern void* args_list[11];
 extern int (*ui_syscallptr)(int arg, ...);
 
-static int syscall(int cmd, ...)
+static int ui_syscall(int cmd, ...)
 {
 	va_list args;
 	int arg[12];
@@ -26,5 +26,5 @@ static int syscall(int cmd, ...)
 }
 
 void trap_UI_Cvar_VariableStringBuffer(const char* var_name, char* buffer, int bufsize) {
-	syscall(UI_CVAR_VARIABLESTRINGBUFFER, var_name, buffer, bufsize);
+	ui_syscall(UI_CVAR_VARIABLESTRINGBUFFER, var_name, buffer, bufsize);
 }
