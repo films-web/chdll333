@@ -203,13 +203,11 @@ static void CH_UpdateState(void)
         data->playerNum = cg->clientNum;
         trap_Cvar_VariableStringBuffer("cl_currentServerAddress", data->server, sizeof(data->server));
     }
+
     else
     {
         data->inGame = 0;
         data->playerNum = -1;
-    }
-
-    if (data->server[0] == '\0') {
         strncpy(data->server, "In Lobby", sizeof(data->server) - 1);
     }
 
