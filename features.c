@@ -1,7 +1,6 @@
 #include <string.h>
 #include <stdio.h>
 #include "engine/cg_local.h"
-#include "engine/ui_local.h"
 #include "ipc.h"
 #include "features.h"
 
@@ -14,6 +13,7 @@ static CH_Context ctx = {
 };
 
 extern void trap_RemoveCommand(const char* cmdName);
+extern void trap_UI_Cvar_VariableStringBuffer(const char* var_name, char* buffer, int bufsize);
 
 void CH_AddCommands(void)
 {
@@ -195,19 +195,18 @@ static void CH_UpdateState(void)
 
     data = (CH_PlayerDataPayload*)pkt.payload;
 
-    trap_Cvar_VariableStringBuffer("name", data->name, sizeof(data->name));
-
     if (cg)
     {
         data->inGame = 1;
         data->playerNum = cg->clientNum;
+        trap_Cvar_VariableStringBuffer("name", data->name, sizeof(data->name));
         trap_Cvar_VariableStringBuffer("cl_currentServerAddress", data->server, sizeof(data->server));
     }
-
     else
     {
         data->inGame = 0;
         data->playerNum = -1;
+        trap_UI_Cvar_VariableStringBuffer("name", data->name, sizeof(data->name));
         strncpy(data->server, "In Lobby", sizeof(data->server) - 1);
     }
 
