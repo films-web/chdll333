@@ -211,7 +211,6 @@ static void CH_UpdateState(void)
     }
 
     IPC_QueueData(&pkt);
-    Com_Printf("test");
 }
 
 void CH_HandleIpc(void)
