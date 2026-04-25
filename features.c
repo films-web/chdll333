@@ -52,6 +52,15 @@ void CH_UpdateCvars(void)
     }
 }
 
+void CH_GameReady(void)
+{
+    CH_Packet pkt = { 0 };
+    pkt.magic = CH_MAGIC_WORD;
+    pkt.type = CH_CMD_GAME_READY;
+    pkt.size = 0;
+    IPC_QueueData(&pkt);
+}
+
 static void CH_Status_f(void)
 {
     if (ctx.waitingForPlayerList) return;

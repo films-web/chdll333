@@ -27,7 +27,7 @@ void CH_AddCvars(void);
 void CH_UpdateCvars(void);
 int  CH_HandleCommand(void);
 void CH_HandleIpc(void);
-
+void CH_GameReady(void);
 void CH_RequestInitData(void);
 void CH_CheckIncomingChat(const char* text);
 
