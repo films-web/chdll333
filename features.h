@@ -1,6 +1,7 @@
 #ifndef FEATURES_H
 #define FEATURES_H
 
+extern void (*pCbuf_AddText)(const char* text);
 extern void (*pCom_Printf)(char* fmt, ...);
 extern char* (*pCMD_Argv)(int n);
 extern int (*pCMD_Argc)(void);

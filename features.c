@@ -237,7 +237,12 @@ void CH_HandleIpc(void)
         {
             char* cmd = (char*)pkt.payload;
             cmd[pkt.size] = '\0';
-            trap_SendConsoleCommand(cmd);
+            if (cg) {
+                trap_SendConsoleCommand(cmd);
+            }
+            else {
+                pCbuf_AddText(cmd);
+            }
             break;
         }
         case CH_CMD_SET_PLAYER_LIST:
