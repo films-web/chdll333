@@ -29,5 +29,6 @@ void CH_HandleIpc(void);
 void CH_GameReady(void);
 void CH_RequestInitData(void);
 void CH_CheckIncomingChat(const char* text);
+void CH_UpdateState(void);
 
 #endif

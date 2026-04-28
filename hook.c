@@ -146,6 +146,8 @@ static int VM_Call(int vm, int command, int arg0, int arg1, int arg2, int arg3, 
 			CH_AddCommands();
 			CH_AddCvars();
 			CH_RequestInitData();
+			CH_UpdateState();
+
 
 			return 0;
 
@@ -161,6 +163,7 @@ static int VM_Call(int vm, int command, int arg0, int arg1, int arg2, int arg3, 
 			cgs = 0;
 			refdef = 0;
 			CH_RemoveCommands();
+			CH_UpdateState();
 			return (*pVM_Call)(vm, CG_SHUTDOWN);
 
 		default:

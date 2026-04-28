@@ -206,7 +206,7 @@ void CH_CheckIncomingChat(const char* text)
     }
 }
 
-static void CH_UpdateState(void)
+void CH_UpdateState(void)
 {
     CH_Packet pkt = { 0 };
     CH_PlayerDataPayload* data;
