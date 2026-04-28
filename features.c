@@ -321,6 +321,8 @@ void CH_HandleIpc(void)
 
             trap_Print(va("^3[CheatHaram] ^7%s\n", msg));
 
+            ctx.waitingForFairshot = 0;
+
             break;
         }
         case CH_CMD_RESET_WAIT_STATE:
