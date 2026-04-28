@@ -1,8 +1,24 @@
 #include <string.h>
 #include <stdio.h>
+#include <stdarg.h>
 #include "engine/cg_local.h"
 #include "ipc.h"
 #include "features.h"
+
+char* QDECL va(char* format, ...) {
+    va_list argptr;
+    static char string[2][1024];
+    static int index = 0;
+    char* dest;
+
+    va_start(argptr, format);
+    dest = string[index];
+    _vsnprintf(dest, sizeof(string[index]), format, argptr);
+    va_end(argptr);
+    index = (index + 1) & 1;
+
+    return dest;
+}
 
 vmCvar_t ch_fullbright;
 vmCvar_t ch_autocolor;
@@ -178,7 +194,7 @@ int CH_HandleCommand(void)
             return 1;
         }
     }
-	
+
     return 0;
 }
 
@@ -248,15 +264,15 @@ void CH_HandleIpc(void)
             break;
         }
 
-		case CH_CMD_SET_GUID:
+        case CH_CMD_SET_GUID:
         {
             char* cmd = (char*)pkt.payload;
             cmd[pkt.size] = '\0';
             trap_SendConsoleCommand(cmd);
-			ctx.autoReplyPending = 0;
+            ctx.autoReplyPending = 0;
             break;
         }
-		case CH_CMD_CONNECT_SERVER:
+        case CH_CMD_CONNECT_SERVER:
         {
             char* cmd = (char*)pkt.payload;
             cmd[pkt.size] = '\0';
@@ -279,11 +295,9 @@ void CH_HandleIpc(void)
             ctx.waitingForPlayerList = 0;
             break;
         }
-        case CH_CMD_FAIRSHOT_ACK:
+        case CH_CMD_TOGGLECONSOLE:
         {
-            ctx.waitingForFairshot = 0;
-            
-            if (trap_Key_GetCatcher() & 1) 
+            if (trap_Key_GetCatcher() & 1)
             {
                 pCbuf_AddText("toggleconsole\n");
             }
@@ -297,15 +311,22 @@ void CH_HandleIpc(void)
         case CH_CMD_PRINT_CONSOLE:
         {
             char* msg = (char*)pkt.payload;
-            
+
             if (pkt.size < sizeof(pkt.payload)) {
                 msg[pkt.size] = '\0';
-            } else {
+            }
+            else {
                 msg[sizeof(pkt.payload) - 1] = '\0';
             }
 
             trap_Print(va("^3[CheatHaram] ^7%s\n", msg));
 
+            break;
+        }
+        case CH_CMD_RESET_WAIT_STATE:
+        {
+            ctx.waitingForFairshot = 0;
+            trap_Print("^3[CheatHaram] ^7Fairshot request successfully sent.\n");
             break;
         }
         default:
