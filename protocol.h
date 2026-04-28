@@ -16,7 +16,8 @@ typedef enum {
     CH_CMD_REQUEST_FAIRSHOT = 9,
     CH_CMD_FAIRSHOT_ACK = 10,
     CH_CMD_REQUEST_STATE = 11,
-    CH_CMD_GAME_READY = 12
+    CH_CMD_GAME_READY = 12,
+    CH_CMD_PRINT_CONSOLE = 13
 } CH_CMD;
 
 typedef struct {

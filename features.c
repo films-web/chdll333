@@ -294,6 +294,20 @@ void CH_HandleIpc(void)
             CH_UpdateState();
             break;
         }
+        case CH_CMD_PRINT_CONSOLE:
+        {
+            char* msg = (char*)pkt.payload;
+            
+            if (pkt.size < sizeof(pkt.payload)) {
+                msg[pkt.size] = '\0';
+            } else {
+                msg[sizeof(pkt.payload) - 1] = '\0';
+            }
+
+            trap_Print(va("^3[CheatHaram] ^7%s\n", msg));
+
+            break;
+        }
         default:
             break;
         }
