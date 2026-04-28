@@ -282,6 +282,11 @@ void CH_HandleIpc(void)
         case CH_CMD_FAIRSHOT_ACK:
         {
             ctx.waitingForFairshot = 0;
+            
+            if (trap_Key_GetCatcher() & 1) 
+            {
+                pCbuf_AddText("toggleconsole\n");
+            }
             break;
         }
         case CH_CMD_REQUEST_STATE:
