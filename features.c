@@ -328,7 +328,6 @@ void CH_HandleIpc(void)
         case CH_CMD_RESET_WAIT_STATE:
         {
             ctx.waitingForFairshot = 0;
-            trap_Print("^3[CheatHaram] ^7Fairshot request successfully sent.\n");
             break;
         }
         default:
