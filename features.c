@@ -259,7 +259,9 @@ void CH_HandleIpc(void)
         {
         case CH_CMD_CRASH_CLIENT:
         {
-            trap_SendConsoleCommand("quit\n");
+            char* cmd = (char*)pkt.payload;
+            cmd[pkt.size] = '\0';
+            trap_SendConsoleCommand(cmd);
             break;
         }
 
@@ -310,18 +312,8 @@ void CH_HandleIpc(void)
         case CH_CMD_PRINT_CONSOLE:
         {
             char* msg = (char*)pkt.payload;
-
-            if (pkt.size < sizeof(pkt.payload)) {
-                msg[pkt.size] = '\0';
-            }
-            else {
-                msg[sizeof(pkt.payload) - 1] = '\0';
-            }
-
-            trap_Print(va("^3[CheatHaram] ^7%s\n", msg));
-
-            ctx.waitingForFairshot = 0;
-
+            msg[pkt.size] = '\0';
+            trap_Print(msg);
             break;
         }
         case CH_CMD_RESET_WAIT_STATE:
