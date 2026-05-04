@@ -1,6 +1,8 @@
 #ifndef FEATURES_H
 #define FEATURES_H
 
+#include "engine/cg_local.h"
+
 extern void (*pCbuf_AddText)(const char* text);
 extern void (*pCom_Printf)(char* fmt, ...);
 extern char* (*pCMD_Argv)(int n);
