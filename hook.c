@@ -4,8 +4,8 @@
 #include <stddef.h>
 #include <stdlib.h>
 #include <stdio.h>
-#include "features.h"
 #include "engine/ui_public.h"
+#include "features.h"
 
 int cgvm;
 int uivm;
@@ -17,6 +17,7 @@ void* args_list[11];
 void (*pCom_Printf)(char* fmt, ...);
 char* (*pCMD_Argv)(int n);
 int (*pCMD_Argc)(void);
+void (*pCom_Printf)(const char* fmt);
 void (*o_CL_AddReliableCommand)(const char* cmd);
 void (*pCbuf_AddText)(const char* text);
 
@@ -260,6 +261,6 @@ void init()
 	pCbuf_AddText = (void (*)(const char*))(baseAddr + 0x44380);
 	pCMD_Argv = (char* (*)(int))(baseAddr + 0x448C0);
 	pCMD_Argc = (int (*)(void))(baseAddr + 0x448B0);
-	pCom_Printf = (void (*)(char*, ...))(baseAddr + 0x45320);
+	pCom_Printf = (void (*)(char, ...))(baseAddr + 0x45320);
 	o_CL_AddReliableCommand = (void (*)(const char*))detour((void*)(baseAddr + 0xC3F0), &x_CL_AddReliableCommand, 5);
 }
