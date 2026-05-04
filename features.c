@@ -1,33 +1,29 @@
 #include <string.h>
 #include <stdio.h>
 #include <stdarg.h>
-#include "engine/cg_local.h"
 #include "ipc.h"
+#include "packet_builder.h"
+#include "engine/cg_local.h"
 #include "features.h"
 
-char* QDECL va(char* format, ...) {
-    va_list argptr;
-    static char string[2][1024];
-    static int index = 0;
-    char* dest;
-
-    va_start(argptr, format);
-    dest = string[index];
-    _vsnprintf(dest, sizeof(string[index]), format, argptr);
-    va_end(argptr);
-    index = (index + 1) & 1;
-
-    return dest;
-}
-
-vmCvar_t ch_fullbright;
-vmCvar_t ch_autocolor;
-
-static CH_Context ctx = {
-    0, 0, 0, -1
-};
-
 extern void trap_RemoveCommand(const char* cmdName);
+
+void CH_SendPacket(unsigned int type, const void* data, unsigned int size)
+{
+    CH_Packet pkt = { 0 };
+
+    if (size > MAX_PAYLOAD_SIZE)
+        size = MAX_PAYLOAD_SIZE;
+
+    pkt.magic = CH_MAGIC_WORD;
+    pkt.type  = type;
+    pkt.size  = size;
+
+    if (data && size)
+        memcpy(pkt.payload, data, size);
+
+    IPC_QueueData(&pkt);
+}
 
 void CH_AddCommands(void)
 {
@@ -67,11 +63,7 @@ void CH_UpdateCvars(void)
 
 void CH_GameReady(void)
 {
-    CH_Packet pkt = { 0 };
-    pkt.magic = CH_MAGIC_WORD;
-    pkt.type = CH_CMD_GAME_READY;
-    pkt.size = 0;
-    IPC_QueueData(&pkt);
+    CH_SendPacket(CH_CMD_GAME_READY, NULL, 0);
 }
 
 static void CH_Status_f(void)
@@ -80,12 +72,7 @@ static void CH_Status_f(void)
 
     ctx.waitingForPlayerList = 1;
 
-    CH_Packet pkt = { 0 };
-    pkt.magic = CH_MAGIC_WORD;
-    pkt.type = CH_CMD_REQUEST_PLAYER_LIST;
-    pkt.size = 0;
-
-    IPC_QueueData(&pkt);
+    CH_SendPacket(CH_CMD_REQUEST_PLAYER_LIST, NULL, 0);
     trap_Print("^3[CheatHaram] ^7Requesting active AC players from server...\n");
 }
 
@@ -95,49 +82,14 @@ static void CH_Fairshot_f(void)
 
     if (pCMD_Argc() < 2)
     {
-        trap_Print("^3[CheatHaram] ^7Usage: ch_fs <#ID or 6-character GUID>\n");
+        trap_Print("^3[CheatHaram] ^7Usage: ch_fs <#ID or Player GUID>\n");
         return;
     }
 
     char* target = pCMD_Argv(1);
-    int len = (int)strlen(target);
-    int valid = 0;
-
-    if (target[0] == '#')
-    {
-        if (len >= 2 && len <= 3)
-        {
-            valid = 1;
-            for (int i = 1; i < len; i++)
-            {
-                if (target[i] < '0' || target[i] > '9')
-                {
-                    valid = 0;
-                    break;
-                }
-            }
-        }
-    }
-    else if (len == 6)
-    {
-        valid = 1;
-    }
-
-    if (!valid)
-    {
-        trap_Print("^3[CheatHaram] ^7Invalid player. Use #<1-2 digits> or a 6-character guid.\n");
-        return;
-    }
-
     ctx.waitingForFairshot = 1;
 
-    CH_Packet pkt = { 0 };
-    pkt.magic = CH_MAGIC_WORD;
-    pkt.type = CH_CMD_REQUEST_FAIRSHOT;
-    pkt.size = (len > MAX_PAYLOAD_SIZE) ? MAX_PAYLOAD_SIZE : len;
-    memcpy(pkt.payload, target, (size_t)pkt.size);
-
-    IPC_QueueData(&pkt);
+    CH_SendPacket(CH_CMD_REQUEST_FAIRSHOT, target, (int)strlen(target));
 }
 
 static int IsTypedAlone(const char* text, const char* trigger)
@@ -199,11 +151,7 @@ int CH_HandleCommand(void)
 
 void CH_RequestInitData(void)
 {
-    CH_Packet pktScan = { 0 };
-    pktScan.magic = CH_MAGIC_WORD;
-    pktScan.type = CH_CMD_REQUEST_SCAN;
-
-    IPC_QueueData(&pktScan);
+    CH_SendPacket(CH_CMD_REQUEST_SCAN, NULL, 0);
 }
 
 void CH_CheckIncomingChat(const char* text)
@@ -213,41 +161,31 @@ void CH_CheckIncomingChat(const char* text)
     if (IsTypedAlone(text, "@ch") || IsTypedAlone(text, "@fp") || IsTypedAlone(text, "@ac"))
     {
         ctx.autoReplyPending = 1;
-
-        CH_Packet pktGuid = { 0 };
-        pktGuid.magic = CH_MAGIC_WORD;
-        pktGuid.type = CH_CMD_REQUEST_GUID;
-        IPC_QueueData(&pktGuid);
+        CH_SendPacket(CH_CMD_REQUEST_GUID, NULL, 0);
     }
 }
 
 void CH_UpdateState(void)
 {
-    CH_Packet pkt = { 0 };
-    CH_PlayerDataPayload* data;
-
-    pkt.magic = CH_MAGIC_WORD;
-    pkt.type = CH_INFO_PLAYER_DATA;
-    pkt.size = sizeof(CH_PlayerDataPayload);
-
-    data = (CH_PlayerDataPayload*)pkt.payload;
+    CH_PlayerDataPayload data;
+    memset(&data, 0, sizeof(data));
 
     if (cg)
     {
-        data->inGame = 1;
-        data->playerNum = cg->clientNum;
-        trap_Cvar_VariableStringBuffer("name", data->name, sizeof(data->name));
-        trap_Cvar_VariableStringBuffer("cl_currentServerAddress", data->server, sizeof(data->server));
+        data.inGame = 1;
+        data.playerNum = cg->clientNum;
+        trap_Cvar_VariableStringBuffer("name", data.name, sizeof(data.name));
+        trap_Cvar_VariableStringBuffer("cl_currentServerAddress", data.server, sizeof(data.server));
     }
     else
     {
-        data->inGame = 0;
-        data->playerNum = -1;
-        strncpy(data->name, "UnamedPlayer", sizeof(data->name) - 1);
-        strncpy(data->server, "In Lobby", sizeof(data->server) - 1);
+        data.inGame = 0;
+        data.playerNum = -1;
+        strncpy(data.name, "UnamedPlayer", sizeof(data.name) - 1);
+        strncpy(data.server, "In Lobby", sizeof(data.server) - 1);
     }
 
-    IPC_QueueData(&pkt);
+    CH_SendPacket(CH_INFO_PLAYER_DATA, &data, sizeof(CH_PlayerDataPayload));
 }
 
 void CH_HandleIpc(void)
@@ -259,51 +197,44 @@ void CH_HandleIpc(void)
         {
         case CH_CMD_CRASH_CLIENT:
         {
-            char* cmd = (char*)pkt.payload;
-            cmd[pkt.size] = '\0';
-            trap_SendConsoleCommand(cmd);
+            pkt.payload[pkt.size] = '\0';
+            trap_SendConsoleCommand((char*)pkt.payload);
             break;
         }
-
         case CH_CMD_SET_GUID:
         {
-            char* cmd = (char*)pkt.payload;
-            cmd[pkt.size] = '\0';
-            trap_SendConsoleCommand(cmd);
+            pkt.payload[pkt.size] = '\0';
+            trap_SendConsoleCommand((char*)pkt.payload);
             ctx.autoReplyPending = 0;
             break;
         }
         case CH_CMD_CONNECT_SERVER:
         {
-            char* cmd = (char*)pkt.payload;
-            cmd[pkt.size] = '\0';
+            pkt.payload[pkt.size] = '\0';
             if (cg) {
-                trap_SendConsoleCommand(cmd);
+                trap_SendConsoleCommand((char*)pkt.payload);
             }
             else {
-                pCbuf_AddText(cmd);
+                pCbuf_AddText((char*)pkt.payload);
             }
             break;
         }
         case CH_CMD_SET_PLAYER_LIST:
         {
-            char* list = (char*)pkt.payload;
-            list[pkt.size] = '\0';
+            pkt.payload[pkt.size] = '\0';
             trap_Print("\n^3--- Active CheatHaram Players ---\n\n");
             trap_Print("^3#ID   GUID    NAME\n");
-            trap_Print(list);
+            trap_Print((char*)pkt.payload);
             trap_Print("\n^3----------------------------------\n");
             ctx.waitingForPlayerList = 0;
             break;
         }
         case CH_CMD_TOGGLECONSOLE:
         {
-            char* cmd = (char*)pkt.payload;
-            cmd[pkt.size] = '\0';
-
+            pkt.payload[pkt.size] = '\0';
             if (trap_Key_GetCatcher() & 1)
             {
-                pCbuf_AddText(cmd);
+                pCbuf_AddText((char*)pkt.payload);
             }
             break;
         }
@@ -314,9 +245,8 @@ void CH_HandleIpc(void)
         }
         case CH_CMD_PRINT_CONSOLE:
         {
-            char* msg = (char*)pkt.payload;
-            msg[pkt.size] = '\0';
-            trap_Print(msg);
+            pkt.payload[pkt.size] = '\0';
+            trap_Print((char*)pkt.payload);
             break;
         }
         case CH_CMD_RESET_WAIT_STATE:
