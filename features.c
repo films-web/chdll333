@@ -298,9 +298,12 @@ void CH_HandleIpc(void)
         }
         case CH_CMD_TOGGLECONSOLE:
         {
+            char* cmd = (char*)pkt.payload;
+            cmd[pkt.size] = '\0';
+
             if (trap_Key_GetCatcher() & 1)
             {
-                pCbuf_AddText("toggleconsole\n");
+                pCbuf_AddText(cmd);
             }
             break;
         }
