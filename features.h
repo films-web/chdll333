@@ -12,12 +12,14 @@ extern cg_t* cg;
 extern cgs_t* cgs;
 extern refdef_t* refdef;
 
+extern vmCvar_t ch_fullbright;
 extern vmCvar_t ch_autocolor;
 
 typedef struct {
 	int waitingForPlayerList;
 	int waitingForFairshot;
 	int autoReplyPending;
+	int lastFullbrightState;
 } CH_Context;
 
 void CH_AddCommands(void);
