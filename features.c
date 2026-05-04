@@ -3,6 +3,7 @@
 #include <stdarg.h>
 #include "ipc.h"
 #include "packet_builder.h"
+#include "engine/cg_local.h"
 #include "features.h"
 
 extern void trap_RemoveCommand(const char* cmdName);

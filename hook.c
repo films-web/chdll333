@@ -4,6 +4,7 @@
 #include <stddef.h>
 #include <stdlib.h>
 #include <stdio.h>
+#include "engine/cg_local.h"
 #include "engine/ui_public.h"
 #include "features.h"
 
