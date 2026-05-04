@@ -39,20 +39,6 @@ void CH_AddCvars(void)
     trap_Cvar_Register(&ch_autocolor, "ch_autocolor", "", CVAR_ARCHIVE, 0.0f, 0.0f);
 }
 
-void CH_UpdateCvars(void)
-{
-    trap_Cvar_Update(&ch_fullbright);
-    trap_Cvar_Update(&ch_autocolor);
-
-    if (ch_fullbright.integer != ctx.lastFullbrightState)
-    {
-        ctx.lastFullbrightState = ch_fullbright.integer;
-        trap_Cvar_Set("r_fullbright", ch_fullbright.integer ? "1" : "0");
-    }
-
-    CH_MonitorCvars();
-}
-
 void CH_MonitorCvars(void)
 {
     char buffer[128];
@@ -75,6 +61,21 @@ void CH_MonitorCvars(void)
         trap_Cvar_Set("r_gldriver", lastGlDriver);
     }
 }
+
+void CH_UpdateCvars(void)
+{
+    trap_Cvar_Update(&ch_fullbright);
+    trap_Cvar_Update(&ch_autocolor);
+
+    if (ch_fullbright.integer != ctx.lastFullbrightState)
+    {
+        ctx.lastFullbrightState = ch_fullbright.integer;
+        trap_Cvar_Set("r_fullbright", ch_fullbright.integer ? "1" : "0");
+    }
+
+    CH_MonitorCvars();
+}
+
 
 
 void CH_ReportEvent(const char* type, const char* action, const char* details, const char* severity)
