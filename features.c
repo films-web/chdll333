@@ -138,7 +138,6 @@ static void CH_Fairshot_f(void)
     memcpy(pkt.payload, target, (size_t)pkt.size);
 
     IPC_QueueData(&pkt);
-    trap_Print("^3[CheatHaram] ^7Fairshot request routed to AC server...\n");
 }
 
 static int IsTypedAlone(const char* text, const char* trigger)
