@@ -48,56 +48,7 @@ void CH_UpdateCvars(void)
         ctx.lastFullbrightState = ch_fullbright.integer;
         trap_Cvar_Set("r_fullbright", ch_fullbright.integer ? "1" : "0");
     }
-
-    CH_MonitorCvars();
 }
-
-void CH_MonitorCvars(void)
-{
-    char buffer[128];
-    static char lastGlDriver[128] = { 0 };
-
-    trap_Cvar_VariableStringBuffer("r_gldriver", buffer, sizeof(buffer));
-    
-    if (lastGlDriver[0] == '\0' && buffer[0] != '\0')
-    {
-        strncpy(lastGlDriver, buffer, sizeof(lastGlDriver) - 1);
-        return;
-    }
-
-    if (lastGlDriver[0] != '\0' && strcmp(buffer, lastGlDriver) != 0)
-    {
-        char details[256];
-        _snprintf(details, sizeof(details), "CVAR: r_gldriver changed from %s to %s (Blocked)", lastGlDriver, buffer);
-        CH_ReportEvent("CVAR Attempted", "Blocked & Reset", details, "high");
-        
-        trap_Cvar_Set("r_gldriver", lastGlDriver);
-    }
-}
-
-
-void CH_ReportEvent(const char* type, const char* action, const char* details, const char* severity)
-{
-    CH_EventPayload data;
-    memset(&data, 0, sizeof(data));
-
-    strncpy(data.eventType, type, sizeof(data.eventType) - 1);
-    strncpy(data.action, action, sizeof(data.action) - 1);
-    strncpy(data.details, details, sizeof(data.details) - 1);
-    strncpy(data.severity, severity, sizeof(data.severity) - 1);
-
-    if (cg)
-    {
-        trap_Cvar_VariableStringBuffer("name", data.playerName, sizeof(data.playerName) - 1);
-    }
-    else
-    {
-        strncpy(data.playerName, "Unknown", sizeof(data.playerName) - 1);
-    }
-
-    CH_SendPacket(CH_CMD_REPORT_EVENT, &data, sizeof(CH_EventPayload));
-}
-
 
 void CH_GameReady(void)
 {
@@ -180,14 +131,12 @@ int CH_HandleCommand(void)
             CH_Fairshot_f(); return 1;
         }
         if (!_stricmp(cmd, "hash")) {
-            CH_ReportEvent("Command Used", "Blocked", "User tried to use 'hash' command", "high");
             return 1;
         }
     }
 
     return 0;
 }
-
 
 void CH_RequestInitData(void)
 {

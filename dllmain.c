@@ -3,8 +3,6 @@
 #include <string.h>
 #include <stdint.h>
 #include "ipc.h"
-#include "features.h"
-
 
 HWND(WINAPI* oCreateWindowExA)(
     DWORD dwExStyle,
@@ -118,18 +116,8 @@ BOOL APIENTRY DllMain(HMODULE hModule, DWORD ul_reason_for_call, LPVOID lpReserv
         DisableThreadLibraryCalls(hModule);
 
         IPC_Init();
-        
-        char processPath[MAX_PATH];
-        GetModuleFileNameA(NULL, processPath, MAX_PATH);
-        char* processName = strrchr(processPath, '\\');
-        if (processName) processName++; else processName = processPath;
-
-        if (_stricmp(processName, "SoF2.exe") != 0 && _stricmp(processName, "sof2mp.exe") != 0) {
-            CH_ReportEvent("Security Violation", "Blocked", "Unauthorized DLL access (External Process)", "high");
-        }
 
         Hook(
-
             GetModuleHandle(NULL),
             "user32.dll",
             "CreateWindowExA",
