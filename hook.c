@@ -4,6 +4,7 @@
 #include <stddef.h>
 #include <stdlib.h>
 #include <stdio.h>
+#include "features.h"
 #include "engine/ui_public.h"
 
 int cgvm;
