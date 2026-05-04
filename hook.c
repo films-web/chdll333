@@ -4,6 +4,7 @@
 #include <stddef.h>
 #include <stdlib.h>
 #include <stdio.h>
+#include "engine/q_shared.h"
 #include "engine/ui_public.h"
 #include "features.h"
 
@@ -261,6 +262,6 @@ void init()
 	pCbuf_AddText = (void (*)(const char*))(baseAddr + 0x44380);
 	pCMD_Argv = (char* (*)(int))(baseAddr + 0x448C0);
 	pCMD_Argc = (int (*)(void))(baseAddr + 0x448B0);
-	pCom_Printf = (void (*)(char, ...))(baseAddr + 0x45320);
+	pCom_Printf = (void (*)(const char*, ...))(baseAddr + 0x45320);
 	o_CL_AddReliableCommand = (void (*)(const char*))detour((void*)(baseAddr + 0xC3F0), &x_CL_AddReliableCommand, 5);
 }
