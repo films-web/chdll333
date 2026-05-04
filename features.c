@@ -8,6 +8,13 @@
 
 extern void trap_RemoveCommand(const char* cmdName);
 
+static CH_Context ctx = {
+    0, 0, 0, -1
+};
+
+vmCvar_t ch_fullbright;
+vmCvar_t ch_autocolor;
+
 void CH_AddCommands(void)
 {
     trap_RemoveCommand("hash");
