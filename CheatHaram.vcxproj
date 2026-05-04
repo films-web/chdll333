@@ -23,6 +23,7 @@
     <ClCompile Include="features.c" />
     <ClCompile Include="hook.c" />
     <ClCompile Include="ipc.c" />
+    <ClCompile Include="packet_builder.c" />
     <ClCompile Include="queue.c" />
     <ClCompile Include="syscalls.c" />
   </ItemGroup>
@@ -55,6 +56,7 @@
     <ClInclude Include="engine\ui_shared.h" />
     <ClInclude Include="features.h" />
     <ClInclude Include="ipc.h" />
+    <ClInclude Include="packe_builder.h" />
     <ClInclude Include="protocol.h" />
     <ClInclude Include="queue.h" />
   </ItemGroup>
