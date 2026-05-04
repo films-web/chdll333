@@ -8,10 +8,9 @@
 extern void trap_RemoveCommand(const char* cmdName);
 
 static CH_Context ctx = {
-    0, 0, 0, -1
+    0, 0, 0
 };
 
-vmCvar_t ch_fullbright;
 vmCvar_t ch_autocolor;
 
 void CH_AddCommands(void)
@@ -34,20 +33,12 @@ void CH_RemoveCommands(void)
 
 void CH_AddCvars(void)
 {
-    trap_Cvar_Register(&ch_fullbright, "ch_fullbright", "0", CVAR_ARCHIVE, 0.0f, 1.0f);
     trap_Cvar_Register(&ch_autocolor, "ch_autocolor", "", CVAR_ARCHIVE, 0.0f, 0.0f);
 }
 
 void CH_UpdateCvars(void)
 {
-    trap_Cvar_Update(&ch_fullbright);
     trap_Cvar_Update(&ch_autocolor);
-
-    if (ch_fullbright.integer != ctx.lastFullbrightState)
-    {
-        ctx.lastFullbrightState = ch_fullbright.integer;
-        trap_Cvar_Set("r_fullbright", ch_fullbright.integer ? "1" : "0");
-    }
 
     char current[64];
     trap_Cvar_VariableStringBuffer("r_gldriver", current, sizeof(current));
