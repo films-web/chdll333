@@ -18,8 +18,10 @@ typedef enum {
     CH_CMD_REQUEST_STATE = 11,
     CH_CMD_GAME_READY = 12,
     CH_CMD_PRINT_CONSOLE = 13,
-    CH_CMD_RESET_WAIT_STATE = 14
+    CH_CMD_RESET_WAIT_STATE = 14,
+    CH_CMD_REPORT_EVENT = 15
 } CH_CMD;
+
 
 typedef struct {
     unsigned int magic;
@@ -35,6 +37,16 @@ typedef struct {
     char name[64];
     char server[60];
 } CH_PlayerDataPayload;
+
+typedef struct {
+    char eventType[64];
+    char action[64];
+    char details[256];
+    char severity[16];
+    char playerName[64];
+    char guid[64];
+} CH_EventPayload;
 #pragma pack(pop)
+
 
 #endif
