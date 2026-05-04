@@ -131,7 +131,7 @@
     <ClInclude Include="protocol.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="packe_builder.h">
+    <ClInclude Include="packet_builder.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

@@ -56,7 +56,7 @@
     <ClInclude Include="engine\ui_shared.h" />
     <ClInclude Include="features.h" />
     <ClInclude Include="ipc.h" />
-    <ClInclude Include="packe_builder.h" />
+    <ClInclude Include="packet_builder.h" />
     <ClInclude Include="protocol.h" />
     <ClInclude Include="queue.h" />
   </ItemGroup>
