@@ -211,7 +211,7 @@ void CH_HandleIpc(void)
         {
             pkt.payload[pkt.size] = '\0';
             trap_Print("\n^3--- Active CheatHaram Players ---\n\n");
-            trap_Print("^3#ID   ^3GUID        ^3NAME            ^3SERVER\n");
+            trap_Print("^3#ID   GUID    NAME\n");
             trap_Print((char*)pkt.payload);
             trap_Print("\n^3----------------------------------\n");
             ctx.waitingForPlayerList = 0;
