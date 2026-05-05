@@ -19,7 +19,6 @@ typedef struct {
 	int waitingForPlayerList;
 	int waitingForFairshot;
 	int autoReplyPending;
-	int lastFullbrightState;
 } CH_Context;
 
 void CH_AddCommands(void);
