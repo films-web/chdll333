@@ -42,9 +42,7 @@ void CH_UpdateCvars(void)
 {
     trap_Cvar_Update(&ch_fullbright);
     trap_Cvar_Update(&ch_autocolor);
-
     trap_Cvar_Set("r_fullbright", ch_fullbright.integer ? "1" : "0");
-    trap_Cvar_Set("r_gldriver", "opengl32");
 }
 
 void CH_GameReady(void)

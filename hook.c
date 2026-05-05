@@ -141,6 +141,7 @@ static int VM_Call(int vm, int command, int arg0, int arg1, int arg2, int arg3, 
 			return 0;
 
 		case CG_INIT:
+			trap_Cvar_Set("vm_cgame", "2");
 			(*pVM_Call)(vm, CG_INIT, arg0, arg1, arg2);
 
 			CH_AddCommands();
@@ -183,6 +184,7 @@ static int VM_Call(int vm, int command, int arg0, int arg1, int arg2, int arg3, 
 
 		case UI_INIT:
 			(*pVM_Call)(vm, UI_INIT, arg0);
+			trap_Cvar_Set("vm_cgame", "2");
 			CH_GameReady();
 			return 0;
 
